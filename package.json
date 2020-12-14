@@ -8,14 +8,15 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-icons": "^3.11.0",
     "react-scripts": "3.4.3",
     "socket.io": "^2.3.0",
     "uuid": "^8.3.1"
   },
   "scripts": {
     "start": "concurrently 'npm run react' 'npm run server'",
-    "react": "react-scripts start",
-    "server": "nodemon server/index.js",
+    "react": "BROWSER=none react-scripts start",
+    "server": "nodemon src/server/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

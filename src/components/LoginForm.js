@@ -6,36 +6,43 @@ export default class LoginForm extends Component {
     super(props);
 
     this.state = {
-      nickname: "",
+      nameInput: "",
       error: "",
     };
   }
 
   handleChange = (e) => {
-    this.setState({ nickname: e.target.value });
+    this.setState({ nameInput: e.target.value });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
     const { socket } = this.props;
-    const { nickname } = this.state;
-    socket.emit(VERIFY_USER, nickname, this.verifyName);
+    const { nameInput } = this.state;
+    socket.emit(VERIFY_USER, nameInput, this.verifyName);
+    console.log("submitted this state:", this.state, VERIFY_USER)
   };
 
   verifyName = ({ user, isUser }) => {
+    console.log("hit verifyname", user, isUser);
     if (isUser) {
-      this.setState("Username is already taken");
+      this.setError("Username is already taken");
     } else {
+      this.setError("")
       this.props.setUser(user);
     }
   };
 
+  setError = (error) => {
+    this.setState({error})
+  }
+
   render() {
-    const { nickname, error } = this.state;
+    const { nameInput, error } = this.state;
     return (
       <div className="login">
         <form onSubmit={this.handleSubmit} className="login-form">
-          <label htmlFor="nickname">
+          <label htmlFor="nameInput">
             <h2>Got a nickname?</h2>
           </label>
           <input
@@ -43,8 +50,8 @@ export default class LoginForm extends Component {
               this.textInput = input;
             }}
             type="text"
-            id="nickname"
-            value={nickname}
+            id="nameInput"
+            value={nameInput}
             onChange={this.handleChange}
             placeholder={"my cool username"}
           />
