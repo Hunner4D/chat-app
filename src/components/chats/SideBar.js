@@ -19,7 +19,7 @@ export default class SideBar extends Component {
           className="users"
           ref="users"
           onClick={(e) => {
-            e.target === this.ref.user && setActiveChat(null);
+            e.target === this.refs.user && setActiveChat(null);
           }}
         >
           {chats.map((chat) => {

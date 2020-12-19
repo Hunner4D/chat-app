@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import SideBar from "./SideBar";
-import ChatHeading from './ChatHeading'
-import Messages from '../messages/Messages'
-import MessageInput from '../messages/MessageInput'
+import ChatHeading from "./ChatHeading";
+import Messages from "../messages/Messages";
+import MessageInput from "../messages/MessageInput";
 
 import {
-  MESSAGE_SENT,
   TYPING,
   COMMUNITY_CHAT,
+  MESSAGE_SENT,
   MESSAGE_RECIEVED,
 } from "../../utils/events";
 
@@ -105,7 +105,7 @@ export default class ChatContainer extends Component {
             </div>
           ) : (
             <div className="chat-room choose">
-                <h3>Choose a chat!</h3>
+              <h3>Choose a chat!</h3>
             </div>
           )}
         </div>
