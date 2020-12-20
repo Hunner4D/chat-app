@@ -1,10 +1,24 @@
 const io = require("./index.js").io;
-
-const { VERIFY_USER, USER_CONNECTED, LOGOUT, COMMUNITY_CHAT } = require("../utils/events");
-const { createUser, createMessage, createChat } = require("../utils/factories");
+const {
+  createUser,
+  createMessage,
+  createChat,
+  addUser,
+  removeUser,
+  isUser,
+} = require("../utils/factories");
+const {
+  VERIFY_USER,
+  USER_CONNECTED,
+  LOGOUT,
+  COMMUNITY_CHAT,
+  MESSAGE_RECIEVED,
+  MESSAGE_SENT,
+} = require("../utils/events");
 
 let connectedUsers = {};
-let communityChat = createChat()
+let communityChat = createChat();
+let sendMessageToChatFromUser;
 
 module.exports = function (socket) {
   console.log("socket id: " + socket.id);
@@ -23,32 +37,44 @@ module.exports = function (socket) {
   socket.on(USER_CONNECTED, (user) => {
     connectedUsers = addUser(connectedUsers, user);
     socket.user = user;
+
+    sendMessageToChatFromUser = sendMessageToChat(user.name);
+
     io.emit(USER_CONNECTED, connectedUsers);
     console.log("Connected Users: ", connectedUsers);
   });
 
-  //User disconnects
-
   //User Logouts
+  socket.on(LOGOUT, () => {
+    connectedUsers = removeUser(connectedUsers, socket.user.name);
+    console.log("User logged out... Remaining users: ", connectedUsers);
+  });
+
+  //User disconnects
+  socket.on("disconnect", () => {
+    if ("user" in socket) {
+      connectedUsers = removeUser(connectedUsers, socket.user.name);
+      console.log("Users after disconnection", connectedUsers);
+    }
+  });
 
   //Get Community Chat
   socket.on(COMMUNITY_CHAT, (callback) => {
     callback(communityChat);
   });
+
+  //On Chat Message Sent
+  socket.on(MESSAGE_SENT, ({ chatId, message }) => {
+    sendMessageToChatFromUser(chatId, message);
+  });
 };
 
-function addUser(userList, user) {
-  let newList = Object.assign({}, userList);
-  newList[user.name] = user;
-  return newList;
-}
-
-function removeUser(userList, username) {
-  let newList = Object.assign({}, userList);
-  delete newList[username];
-  return newList;
-}
-
-function isUser(userList, username) {
-  return username in userList;
+//Send Message to Chat
+function sendMessageToChat(sender) {
+  return (chatId, message) => {
+    io.emit(
+      `${MESSAGE_RECIEVED}-${chatId}`,
+      createMessage( message, sender )
+    );
+  };
 }

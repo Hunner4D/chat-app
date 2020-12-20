@@ -51,7 +51,6 @@ export default class ChatContainer extends Component {
         if (chat.id === chatId) chat.messages.push(message);
         return chat;
       });
-
       this.setState({ chats: newChats });
     };
   };

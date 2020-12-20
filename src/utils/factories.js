@@ -7,7 +7,7 @@ const createUser = (name = "") => ({
 
 const createMessage = (message = "", sender = "") => ({
   id: v4(),
-  time: new Date(Date.now()),
+  time: getTime(new Date(Date.now())),
   message,
   sender,
 });
@@ -17,8 +17,24 @@ const createChat = (messages = [], name = "Community", users = []) => ({
   name,
   messages,
   users,
-  typingUsers: []
+  typingUsers: [],
 });
+
+function addUser(userList, user) {
+  let newList = Object.assign({}, userList);
+  newList[user.name] = user;
+  return newList;
+}
+
+function removeUser(userList, username) {
+  let newList = Object.assign({}, userList);
+  delete newList[username];
+  return newList;
+}
+
+function isUser(userList, username) {
+  return username in userList;
+}
 
 const getTime = (date) => {
   return `${date.getHours()}:${("0" + date.getMinutes()).slice(-2)}`;
@@ -27,5 +43,9 @@ const getTime = (date) => {
 module.exports = {
   createMessage,
   createChat,
-  createUser
-}
+  createUser,
+  addUser,
+  removeUser,
+  isUser,
+  getTime,
+};

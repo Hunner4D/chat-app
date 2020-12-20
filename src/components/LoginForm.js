@@ -20,11 +20,9 @@ export default class LoginForm extends Component {
     const { socket } = this.props;
     const { nameInput } = this.state;
     socket.emit(VERIFY_USER, nameInput, this.verifyName);
-    console.log("submitted this state:", this.state, VERIFY_USER)
   };
 
   verifyName = ({ user, isUser }) => {
-    console.log("hit verifyname", user, isUser);
     if (isUser) {
       this.setError("Username is already taken");
     } else {

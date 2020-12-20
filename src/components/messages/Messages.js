@@ -3,8 +3,20 @@ import React, { Component } from "react";
 class Messages extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
+
+  componentDidMount() {
+    this.scrollDown();
+  }
+
+  componentDidUpdate() {
+    this.scrollDown();
+  }
+
+  scrollDown = () => {
+    const { container } = this.refs;
+    container.scrollTop = container.scrollHeight;
+  };
 
   render() {
     const { messages, user, typingUsers } = this.props;
@@ -27,15 +39,13 @@ class Messages extends Component {
               </div>
             );
           })}
-          {
-            typingUsers.map((name) => {
-                return (
-                    <div key={name} className="typing-user">
-                        {`${name} is typing . . .`}
-                    </div>
-                )
-            })
-          }
+          {typingUsers.map((name) => {
+            return (
+              <div key={name} className="typing-user">
+                {`${name} is typing . . .`}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
