@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { FaChevronDown, FaSearch } from "react-icons/fa";
+import { HiLogout } from "react-icons/hi";
+import { CgMenuMotion } from "react-icons/cg";
 
 export default class SideBar extends Component {
   render() {
@@ -6,11 +9,17 @@ export default class SideBar extends Component {
     return (
       <div id="side-bar">
         <div className="heading">
-          <div className="app-name">Our Cool Chat 'DOWNARROW'</div>
-          <div className="menu">MENU</div>
+          <div className="app-name">
+            Our Cool Chat <FaChevronDown />
+          </div>
+          <div className="menu">
+            <CgMenuMotion />
+          </div>
         </div>
         <div className="search">
-          <i className="search-icon">SEARCH</i>
+          <i className="search-icon">
+            <FaSearch />
+          </i>
           <input placeholder="Search" type="text" />
           <div className="plus"></div>
         </div>
@@ -61,7 +70,7 @@ export default class SideBar extends Component {
             title="Logout"
             className="logout"
           >
-            LOGOUT
+            <HiLogout />
           </div>
         </div>
       </div>
