@@ -20,6 +20,10 @@ class MessageInput extends Component {
     this.props.sendMessage(this.state.message);
   };
 
+  componentWillUnmount = () => {
+      this.stopCheckingTyping();
+  }
+
   sendTyping = () => {
     this.lastUpdateTime = Date.now();
     if (!this.state.isTyping) {
